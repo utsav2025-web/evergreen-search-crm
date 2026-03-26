@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evergreen Search — Extension Settings</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #16a34a;
+      --primary-hover: #15803d;
+      --primary-light: #dcfce7;
+      --danger: #dc2626;
+      --danger-light: #fee2e2;
+      --success: #16a34a;
+      --success-light: #dcfce7;
+      --text: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --bg-subtle: #f9fafb;
+      --radius: 8px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: var(--bg-subtle);
+      padding: 0;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .page-header-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .page-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    input {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text);
+      width: 100%;
+      font-family: inherit;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(22,163,74,0.15);
+    }
+    .input-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary {
+      background: #f3f4f6;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #b91c1c; }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .alert {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+    .alert-success { background: var(--success-light); color: var(--success); }
+    .alert-error { background: var(--danger-light); color: var(--danger); }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--bg-subtle);
+      border-radius: 6px;
+      margin-top: 12px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot-green { background: #22c55e; }
+    .status-dot-gray { background: #9ca3af; }
+    .status-text { font-size: 13px; font-weight: 500; }
+    .status-user { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .shortcut-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <div class="page-header-icon">SF</div>
+      <div>
+        <h1>Evergreen Search Extension</h1>
+        <p>Configure your connection to the CRM and Claude AI</p>
+      </div>
+    </div>
+
+    <!-- CRM Connection -->
+    <div class="card">
+      <div class="card-title">CRM Connection</div>
+      <div class="card-desc">
+        Enter the base URL of your Evergreen Search instance. This is the URL you use to access the CRM in your browser.
+      </div>
+
+      <div class="form-group">
+        <label>CRM Base URL</label>
+        <input type="url" id="crm-url" placeholder="https://your-crm-domain.com or http://localhost:8000" />
+        <span class="input-hint">No trailing slash. Example: https://8000-abc123.manus.computer</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-save-url">Save URL</button>
+        <button class="btn btn-secondary" id="btn-test-connection">Test Connection</button>
+      </div>
+
+      <div id="url-alert" class="alert"></div>
+    </div>
+
+    <!-- Auth Status -->
+    <div class="card">
+      <div class="card-title">Authentication</div>
+      <div class="card-desc">
+        Sign in with your CRM credentials (matt or utsav). Only authorized partners can add companies.
+      </div>
+
+      <div id="auth-status" class="status-row">
+        <div class="status-dot status-dot-gray" id="status-dot"></div>
+        <span class="status-text" id="status-text">Not signed in</span>
+        <span class="status-user" id="status-user"></span>
+      </div>
+
+      <div class="btn-row" style="margin-top: 12px;">
+        <button class="btn btn-secondary" id="btn-logout" style="display:none;">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- Claude AI -->
+    <div class="card">
+      <div class="card-title">Claude AI Enrichment</div>
+      <div class="card-desc">
+        Optional: Enter your Anthropic API key to enable AI-powered company data extraction.
+        Claude will analyze the page content and fill in company details automatically.
+        Without this key, the extension will still extract basic metadata from the page.
+      </div>
+
+      <div class="form-group">
+        <label>Anthropic API Key</label>
+        <input type="password" id="claude-key" placeholder="sk-ant-api03-…" autocomplete="off" />
+        <span class="input-hint">
+          Get your key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+          Stored locally in Chrome — never sent to the CRM.
+        </span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-save-claude">Save API Key</button>
+        <button class="btn btn-danger" id="btn-clear-claude">Clear Key</button>
+      </div>
+
+      <div id="claude-alert" class="alert"></div>
+    </div>
+
+    <!-- Keyboard Shortcut -->
+    <div class="card">
+      <div class="card-title">Keyboard Shortcut</div>
+      <div class="card-desc">Open the extension popup from any tab without clicking the toolbar icon.</div>
+      <div class="shortcut-info">
+        <span>Mac:</span> <kbd>⌘ Cmd</kbd> + <kbd>⇧ Shift</kbd> + <kbd>A</kbd>
+        &nbsp;&nbsp;
+        <span>Windows/Linux:</span> <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+        To customize, go to <strong>chrome://extensions/shortcuts</strong> in your browser.
+      </p>
+    </div>
+
+    <!-- About -->
+    <div class="card">
+      <div class="card-title">About</div>
+      <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+        <strong>Evergreen Search Extension v1.0.0</strong><br/>
+        Built for Evergreen Search<br/>
+        Proprietary deal sourcing: visit any company website and add it to your pipeline in one click.
+      </div>
+    </div>
+
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evergreen Search</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Header ─────────────────────────────────────────────────────────── -->
+    <header class="header">
+      <div class="header-logo">
+        <img src="icons/icon48.png" alt="SF" class="header-icon" />
+        <div>
+          <div class="header-title">Evergreen Search</div>
+          <div class="header-subtitle">Proprietary Deal Sourcing</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="user-badge" class="user-badge hidden"></span>
+        <button id="btn-settings" class="btn-icon" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <!-- ── STATE: Not logged in ───────────────────────────────────────────── -->
+    <div id="state-auth" class="state hidden">
+      <div class="auth-card">
+        <div class="auth-icon">🔒</div>
+        <h2>Sign in to CRM</h2>
+        <p class="auth-desc">Enter your CRM credentials to start adding companies to the pipeline.</p>
+
+        <div id="auth-error" class="alert alert-error hidden"></div>
+
+        <div class="form-group">
+          <label for="auth-username">Username</label>
+          <input type="text" id="auth-username" placeholder="matt or utsav" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+
+        <button id="btn-login" class="btn btn-primary btn-full">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-spinner hidden">⟳</span>
+        </button>
+
+        <p class="auth-note">
+          First time? <a href="#" id="link-open-options">Configure CRM URL</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── STATE: Loading / Analyzing ────────────────────────────────────── -->
+    <div id="state-loading" class="state hidden">
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <div class="loading-text">Analyzing <strong id="loading-domain">page</strong>…</div>
+        <div class="loading-sub">Extracting company data with AI</div>
+      </div>
+    </div>
+
+    <!-- ── STATE: Review & Add Form ──────────────────────────────────────── -->
+    <div id="state-form" class="state hidden">
+
+      <!-- Duplicate warning banner -->
+      <div id="duplicate-banner" class="alert alert-warning hidden">
+        <span class="alert-icon">⚠</span>
+        <span id="duplicate-text"></span>
+        <a href="#" id="duplicate-view-link" class="alert-link">View record →</a>
+      </div>
+
+      <!-- Already in CRM banner -->
+      <div id="exists-banner" class="alert alert-info hidden">
+        <span class="alert-icon">ℹ</span>
+        <strong>Already in CRM:</strong>
+        <a href="#" id="exists-view-link" class="alert-link" id="exists-company-link"></a>
+        <button id="btn-add-anyway" class="btn-text-link">Add anyway</button>
+      </div>
+
+      <div id="form-error" class="alert alert-error hidden"></div>
+
+      <form id="company-form" autocomplete="off">
+
+        <div class="form-section">
+          <div class="form-row">
+            <div class="form-group form-group-grow">
+              <label for="f-name">Company Name <span class="required">*</span></label>
+              <input type="text" id="f-name" required placeholder="Acme Services Inc." />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group-grow">
+              <label for="f-website">Website</label>
+              <input type="url" id="f-website" readonly class="input-readonly" />
+            </div>
+          </div>
+
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="f-industry">Industry</label>
+              <select id="f-industry">
+                <option value="">— Select —</option>
+                <option>HVAC Services</option>
+                <option>Plumbing Services</option>
+                <option>Electrical Services</option>
+                <option>Pest Control</option>
+                <option>Landscaping</option>
+                <option>Janitorial / Cleaning</option>
+                <option>IT Managed Services</option>
+                <option>Staffing / Recruiting</option>
+                <option>Healthcare Services</option>
+                <option>Dental / Medical Practice</option>
+                <option>Home Services</option>
+                <option>Commercial Services</option>
+                <option>Manufacturing</option>
+                <option>Distribution / Logistics</option>
+                <option>Construction</option>
+                <option>Food & Beverage</option>
+                <option>Auto Services</option>
+                <option>Financial Services</option>
+                <option>Insurance</option>
+                <option>Education / Training</option>
+                <option>Software / SaaS</option>
+                <option>E-commerce</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="f-partner">Lead Partner</label>
+              <select id="f-partner">
+                <option value="matt">Matt</option>
+                <option value="utsav">Utsav</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label">Financials (if known)</div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="f-revenue">Revenue (est.)</label>
+              <input type="text" id="f-revenue" placeholder="e.g. $2.5M" />
+            </div>
+            <div class="form-group">
+              <label for="f-asking">Asking Price</label>
+              <input type="text" id="f-asking" placeholder="e.g. $5M" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-label">Owner / Contact</div>
+          <div class="form-row">
+            <div class="form-group form-group-grow">
+              <label for="f-owner">Owner Name</label>
+              <input type="text" id="f-owner" placeholder="John Smith" />
+            </div>
+          </div>
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="f-email">Owner Email</label>
+              <input type="email" id="f-email" placeholder="john@company.com" />
+            </div>
+            <div class="form-group">
+              <label for="f-phone">Owner Phone</label>
+              <input type="tel" id="f-phone" placeholder="555-123-4567" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group form-group-grow">
+              <label for="f-location">Location</label>
+              <input type="text" id="f-location" placeholder="Austin, TX" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-group">
+            <label for="f-notes">Notes</label>
+            <textarea id="f-notes" rows="2" placeholder="Quick note about this company…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-meta">
+          <span class="meta-tag">📍 Source: Direct Web</span>
+          <span class="meta-tag">📊 Stage: Prospect</span>
+          <span id="franchise-tag" class="meta-tag meta-tag-warning hidden">⚠ Possible Franchise</span>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="btn-add" class="btn btn-primary btn-full">
+            <span class="btn-text">Add to Pipeline</span>
+            <span class="btn-spinner hidden">⟳</span>
+          </button>
+          <button type="button" id="btn-save-later" class="btn btn-secondary btn-full">
+            Save for Later
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ── STATE: Success ─────────────────────────────────────────────────── -->
+    <div id="state-success" class="state hidden">
+      <div class="success-card">
+        <div class="success-icon">✓</div>
+        <h2>Added to Pipeline!</h2>
+        <div class="success-company" id="success-company-name"></div>
+        <div class="success-meta">
+          <span class="meta-tag">📊 Prospect</span>
+          <span class="meta-tag">📍 Direct Web</span>
+        </div>
+        <div class="success-actions">
+          <a href="#" id="btn-view-crm" class="btn btn-primary btn-full" target="_blank">
+            View in CRM →
+          </a>
+          <button id="btn-add-another" class="btn btn-secondary btn-full">
+            Add Another Company
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STATE: Error ───────────────────────────────────────────────────── -->
+    <div id="state-error" class="state hidden">
+      <div class="error-card">
+        <div class="error-icon">✕</div>
+        <h2 id="error-title">Something went wrong</h2>
+        <p id="error-message"></p>
+        <button id="btn-retry" class="btn btn-secondary btn-full">Try Again</button>
+        <a href="#" id="btn-open-crm" class="btn btn-primary btn-full hidden" target="_blank">
+          Open CRM
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /#app -->
+
+  <script src="popup.js"></script>
+</body>
+</html>

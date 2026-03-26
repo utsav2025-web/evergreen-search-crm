@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+*.db
+*.sqlite3
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build artifacts - frontend dist is included (pre-built)
+# frontend/dist/ -- keep this, it's served by the backend
+
+# Logs
+*.log
+nohup.out
+
+# Secrets
+backend/.env
+backend/searchfund.db
+backend/data_export.json
+
+# Temp scripts
+backend/scrape_security*.py
+backend/enrich_isc_west.py
+backend/export_data.py
+backend/import_data.py
+
+# Uploads (user data, not for git)
+backend/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
