@@ -8,10 +8,22 @@ echo "Python: $(python --version)"
 echo "Working dir: $(pwd)"
 echo "PYTHONUNBUFFERED=${PYTHONUNBUFFERED}"
 
+# Background heartbeat: prints every 10 seconds so we can see if the container is still alive
+(
+  COUNT=0
+  while true; do
+    COUNT=$((COUNT+10))
+    MEM=$(awk '/MemAvailable/{print $2}' /proc/meminfo 2>/dev/null || echo "?")
+    echo "HEARTBEAT +${COUNT}s | MemAvailable=${MEM}kB | PIDS=$(ls /proc | grep -E '^[0-9]+$' | wc -l)"
+    sleep 10
+  done
+) &
+echo "HEARTBEAT pid=$! started"
+
 echo ""
 echo "=== Running Alembic migrations ==="
 alembic upgrade head
-echo "=== Alembic done (exit $?) ==="
+echo "=== Alembic done ==="
 
 echo ""
 echo "=== Testing Python import ==="
