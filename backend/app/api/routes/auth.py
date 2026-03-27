@@ -1,9 +1,9 @@
 """
-Auth routes — Soft Login (profile selector, no password required).
+Auth routes — Profile selector with shared password.
 
 Endpoints:
   GET  /api/auth/profiles  → list available profiles (Matt, Utsav)
-  POST /api/auth/login     → select a profile by username → set 30-day session cookie
+  POST /api/auth/login     → select a profile + verify password → set 30-day session cookie
   POST /api/auth/logout    → clear session cookie
   GET  /api/auth/me        → current user info
   GET  /api/auth/partners  → partner list for @mention picker
@@ -20,12 +20,17 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, COOKIE_NAME
+from app.core.security import hash_password, verify_password
 from app.db.base import get_db
 from app.models.models import User
 
 router = APIRouter()
 
 SESSION_DAYS = 30
+
+# ─── Shared password (both partners use the same password) ────────────────────
+# Hash is computed once at startup; the plaintext never leaves this module.
+_SHARED_PASSWORD_HASH = hash_password("Evergreen")
 
 # ─── Profile definitions ──────────────────────────────────────────────────────
 
@@ -38,7 +43,8 @@ PROFILE_MAP = {p["username"]: p for p in PROFILES}
 # ─── Pydantic models ──────────────────────────────────────────────────────────
 
 class LoginRequest(BaseModel):
-    username: str  # "matt" or "utsav"
+    username: str   # "matt" or "utsav"
+    password: str   # shared password
 
 # ─── Routes ───────────────────────────────────────────────────────────────────
 
@@ -61,6 +67,10 @@ async def soft_login(
     username = body.username.lower().strip()
     if username not in PROFILE_MAP:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unknown profile")
+
+    # Verify shared password — same for both partners
+    if not verify_password(body.password, _SHARED_PASSWORD_HASH):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
 
     profile = PROFILE_MAP[username]
 
