@@ -7,11 +7,9 @@
   NODE_VERSION = "20"
 
 # ── Proxy all /api/* to the Railway backend ──────────────────────────────────
-# Set BACKEND_URL in Netlify environment variables to your Railway service URL
-# e.g. https://evergreen-search-crm-production.up.railway.app
 [[redirects]]
   from   = "/api/*"
-  to     = ":BACKEND_URL/api/:splat"
+  to     = "https://evergreen-search-crm-production.up.railway.app/api/:splat"
   status = 200
   force  = true
 
