@@ -4,7 +4,12 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     curl \
     libmagic1 \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+# Force unbuffered Python output so logs appear immediately (critical for Railway)
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONFAULTHANDLER=1
 
 WORKDIR /app
 
