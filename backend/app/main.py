@@ -1,6 +1,7 @@
 """
 Evergreen Search CRM — FastAPI Application Entry Point (V2 Refactor)
 """
+import asyncio
 import os
 from contextlib import asynccontextmanager
 
@@ -45,10 +46,19 @@ from app.api.routes import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create DB tables on startup (dev only; use Alembic in prod)."""
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    logger.info("Database tables ensured.")
+    """Startup: ensure DB tables exist.  Uses a 15-second timeout so a
+    slow/failing asyncpg connection never blocks uvicorn from starting.
+    In production Alembic handles schema; this is a safety-net only."""
+    try:
+        async with asyncio.timeout(15):
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+        logger.info("Database tables ensured.")
+    except Exception as exc:
+        logger.warning(
+            f"Startup create_all skipped ({type(exc).__name__}: {exc}). "
+            "Alembic manages the schema in production — this is safe to ignore."
+        )
     yield
     await engine.dispose()
     logger.info("Database engine disposed.")
