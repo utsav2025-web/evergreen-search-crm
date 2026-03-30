@@ -122,12 +122,13 @@ export default function ImportPage() {
 
     try {
       const r = await api.post("/import/csv", form, {
-        headers: { "Content-Type": undefined },      });
+        headers: { "Content-Type": undefined },
+      });
       setResult(r.data);
       loadJobs();
     } catch (e: any) {
-            const detail = e?.response?.data?.detail;
-            setError(typeof detail === "string" ? detail : "Upload failed");
+      const detail = e?.response?.data?.detail;
+      setError(typeof detail === "string" ? detail : "Upload failed");
     } finally {
       setUploading(false);
     }
