@@ -1321,7 +1321,7 @@ class InboundEmail(TimestampMixin, Base):
     broker_listing      = relationship("BrokerListing", foreign_keys=[broker_listing_id])
 
     __table_args__ = (
-        Index("ix_inbound_emails_parse_status", "parse_status"),
+        # Note: parse_status index is already created via index=True on the column above
         Index("ix_inbound_emails_is_reviewed",  "is_reviewed"),
     )
 
