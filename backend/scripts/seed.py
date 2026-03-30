@@ -393,7 +393,7 @@ COMPANIES_DATA = [
             "ai_score": 91.0,
             "ai_score_rationale": "Best-in-class recurring revenue (90% MRR). MSP sector has strong acquisition multiples and clear growth playbook.",
             "tags": ["recurring_revenue", "b2b", "msp", "technology", "mrr", "cybersecurity"],
-            "deal_stage": DealStage.DD,
+            "deal_stage": DealStage.DILIGENCE,
             "is_proprietary": False,
             "is_active": True,
         },
@@ -432,10 +432,10 @@ COMPANIES_DATA = [
             {"period_year": 2021, "period_type": "annual", "revenue": 4_100_000, "ebitda": 820_000, "sde": 1_090_000, "owner_comp": 270_000},
         ],
         "notes": [
-            {"content": "LOI accepted at $7.39M (5.5x EBITDA). DD kicked off 2024-03-05. QofE engagement signed with Riviera Partners CPA.", "note_type": "general", "is_pinned": True, "tagged_stage": DealStage.DD},
-            {"content": "SBA 7(a) pre-qualified with Live Oak Bank up to $5M. Utsav building 5-year financial model.", "note_type": "general", "is_pinned": False, "tagged_stage": DealStage.DD},
-            {"content": "Management team is strong — 3 senior technicians with 5+ years each. Low key-person risk.", "note_type": "diligence", "is_pinned": False, "tagged_stage": DealStage.DD},
-            {"content": "DD Checklist: [x] 3yr financials [x] Client contracts [ ] IP/software licenses [ ] Litigation check [ ] Insurance certs", "note_type": "diligence", "is_pinned": True, "tagged_stage": DealStage.DD},
+            {"content": "LOI accepted at $7.39M (5.5x EBITDA). DD kicked off 2024-03-05. QofE engagement signed with Riviera Partners CPA.", "note_type": "general", "is_pinned": True, "tagged_stage": DealStage.DILIGENCE},
+            {"content": "SBA 7(a) pre-qualified with Live Oak Bank up to $5M. Utsav building 5-year financial model.", "note_type": "general", "is_pinned": False, "tagged_stage": DealStage.DILIGENCE},
+            {"content": "Management team is strong — 3 senior technicians with 5+ years each. Low key-person risk.", "note_type": "diligence", "is_pinned": False, "tagged_stage": DealStage.DILIGENCE},
+            {"content": "DD Checklist: [x] 3yr financials [x] Client contracts [ ] IP/software licenses [ ] Litigation check [ ] Insurance certs", "note_type": "diligence", "is_pinned": True, "tagged_stage": DealStage.DILIGENCE},
         ],
     },
     # ── 5. Passed ─────────────────────────────────────────────────────────────
