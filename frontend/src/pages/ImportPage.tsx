@@ -121,9 +121,7 @@ export default function ImportPage() {
     form.append("auto_score", String(autoScore));
 
     try {
-      const r = await api.post("/import/csv", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const r = await api.post("/import/csv", form);
       setResult(r.data);
       loadJobs();
     } catch (e: any) {
