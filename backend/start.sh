@@ -7,7 +7,6 @@ echo "PORT=${PORT:-NOT SET}"
 echo "Python: $(python --version)"
 echo "Working dir: $(pwd)"
 echo "PYTHONUNBUFFERED=${PYTHONUNBUFFERED}"
-
 # Background heartbeat: prints every 10 seconds so we can see if the container is still alive
 (
   COUNT=0
@@ -24,7 +23,7 @@ echo ""
 echo "=== Running Alembic migrations ==="
 alembic upgrade head
 echo "=== Alembic done ==="
-python scripts/ensure_tables.py || true
+PYTHONPATH=/app python scripts/ensure_tables.py || true
 
 echo ""
 echo "=== Testing Python import ==="
