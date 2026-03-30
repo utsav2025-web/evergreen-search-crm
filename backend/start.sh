@@ -24,6 +24,7 @@ echo ""
 echo "=== Running Alembic migrations ==="
 alembic upgrade head
 echo "=== Alembic done ==="
+python scripts/ensure_tables.py || true
 
 echo ""
 echo "=== Testing Python import ==="
