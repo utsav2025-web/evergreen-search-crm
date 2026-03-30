@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 interface ImportJob {
   id: number;
-  filename: strin
+  filename: string
   status: string;
   total_rows: number;
   imported_rows: number;
