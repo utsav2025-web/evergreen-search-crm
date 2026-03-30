@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 interface ImportJob {
   id: number;
-  filename: string;
+  filename: strin
   status: string;
   total_rows: number;
   imported_rows: number;
@@ -121,11 +121,14 @@ export default function ImportPage() {
     form.append("auto_score", String(autoScore));
 
     try {
-      const r = await api.post("/import/csv", form);
+      const r = await api.post("/import/csv", form, {
+                headers: { "Content-Type": "multipart/form-data" },
+      });
       setResult(r.data);
       loadJobs();
     } catch (e: any) {
-      setError(e?.response?.data?.detail || "Upload failed");
+            const detail = e?.response?.data?.detail;
+            setError(typeof detail === "string" ? detail : "Upload failed");
     } finally {
       setUploading(false);
     }
