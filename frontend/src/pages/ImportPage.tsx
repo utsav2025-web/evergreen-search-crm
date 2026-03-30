@@ -122,8 +122,7 @@ export default function ImportPage() {
 
     try {
       const r = await api.post("/import/csv", form, {
-                headers: { "Content-Type": "multipart/form-data" },
-      });
+        headers: { "Content-Type": undefined },      });
       setResult(r.data);
       loadJobs();
     } catch (e: any) {
