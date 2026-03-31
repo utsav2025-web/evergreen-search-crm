@@ -1,7 +1,7 @@
 """add stage_entered_at to companies
 
 Revision ID: f1e2d3c4b5a6
-Revises: 0f8d4fdcc269
+Revises: a1b2c3d4e5f6
 Create Date: 2026-03-30
 
 """
