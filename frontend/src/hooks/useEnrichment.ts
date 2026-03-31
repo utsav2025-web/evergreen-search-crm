@@ -37,6 +37,9 @@ export interface EnrichmentScore {
 }
 
 export interface EnrichmentSettings {
+  perplexity_configured: boolean;
+  perplexity_key_preview: string | null;
+  // Legacy fields kept for type safety
   google_places_configured: boolean;
   clearbit_configured: boolean;
   google_places_key_preview: string | null;
@@ -88,7 +91,7 @@ export function useUpdateEnrichmentSettings() {
   return useMutation<
     EnrichmentSettings,
     Error,
-    { google_places_api_key?: string; clearbit_api_key?: string }
+    { perplexity_api_key?: string; google_places_api_key?: string; clearbit_api_key?: string }
   >({
     mutationFn: (data) =>
       api.put("/enrichment/settings", data).then((r) => r.data),

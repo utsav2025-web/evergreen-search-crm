@@ -140,59 +140,23 @@ export function EnrichmentSettingsSection() {
       <div className="mb-4">
         <h3 className="font-semibold text-gray-900">Enrichment API Keys</h3>
         <p className="text-sm text-gray-500 mt-0.5">
-          Optional API keys to enable additional enrichment sources. EDGAR,
-          OpenCorporates, Web Search, and LinkedIn work without any keys.
+          Add your Perplexity API key to enable one-click AI enrichment for
+          any company — description, industry, revenue, headcount, location,
+          and owner contact details.
         </p>
       </div>
 
       <div className="divide-y divide-gray-100">
         <ApiKeyField
-          label="Google Places API"
-          description="Enables address, phone, website, and category lookup from Google Maps."
-          docUrl="https://console.cloud.google.com/apis/library/places-backend.googleapis.com"
-          isConfigured={settings?.google_places_configured ?? false}
-          keyPreview={settings?.google_places_key_preview ?? null}
-          onSave={(key) =>
-            updateMutation.mutate({ google_places_api_key: key })
-          }
-          onClear={() =>
-            updateMutation.mutate({ google_places_api_key: "" })
-          }
+          label="Perplexity API"
+          description="Powers AI-driven company enrichment via live web search. Fills in description, industry, revenue, EBITDA, headcount, location, and owner contact info."
+          docUrl="https://www.perplexity.ai/settings/api"
+          isConfigured={settings?.perplexity_configured ?? false}
+          keyPreview={settings?.perplexity_key_preview ?? null}
+          onSave={(key) => updateMutation.mutate({ perplexity_api_key: key })}
+          onClear={() => updateMutation.mutate({ perplexity_api_key: "" })}
           isSaving={updateMutation.isPending}
         />
-
-        <ApiKeyField
-          label="Clearbit API"
-          description="Optional: industry classification, revenue range, tech stack, and social profiles."
-          docUrl="https://dashboard.clearbit.com/api"
-          isConfigured={settings?.clearbit_configured ?? false}
-          keyPreview={settings?.clearbit_key_preview ?? null}
-          onSave={(key) => updateMutation.mutate({ clearbit_api_key: key })}
-          onClear={() => updateMutation.mutate({ clearbit_api_key: "" })}
-          isSaving={updateMutation.isPending}
-        />
-      </div>
-
-      {/* Free sources info */}
-      <div className="mt-4 pt-4 border-t border-gray-100">
-        <p className="text-xs font-medium text-gray-500 mb-2">
-          Always-on free sources (no key required):
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {[
-            "SEC EDGAR",
-            "OpenCorporates",
-            "Web Search + Claude AI",
-            "LinkedIn Snippet",
-          ].map((source) => (
-            <span
-              key={source}
-              className="text-xs bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full"
-            >
-              ✓ {source}
-            </span>
-          ))}
-        </div>
       </div>
     </div>
   );
