@@ -12,7 +12,7 @@ interface ImportJob {
   filename: string
   status: string;
   total_rows: number;
-  imported_rows: number;
+  imported_rows: number
   skipped_rows: number;
   failed_rows: number;
   source_channel: string;
@@ -311,8 +311,10 @@ export default function ImportPage() {
             ["name / company name", "Company name (required)"],
             ["website / url", "Company website"],
             ["industry / sector", "Industry"],
+            ["sub_industry", "Sub-industry"],
             ["revenue / annual_revenue", "Annual revenue ($)"],
             ["ebitda", "EBITDA ($)"],
+            ["ebitda_margin", "EBITDA margin (0–1)"],
             ["asking_price / ask", "Asking price ($)"],
             ["employees / headcount", "Employee count"],
             ["founded_year / established", "Year founded"],
